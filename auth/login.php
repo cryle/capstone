@@ -3,8 +3,6 @@ session_start();
 if (isset($_SESSION["username"])) {
   if ($_SESSION['role'] == "admin") {
     header('Location: ../admin/home.php');
-  } else if ($_SESSION['role'] == "doctor") {
-    header('Location: ../doctor/home.php');
   } else if ($_SESSION['role'] == "nurse") {
     header('Location: ../nurse/home.php');
   } else {

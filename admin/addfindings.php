@@ -7,6 +7,12 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
 }
 include "../auth/conn.php";
 
+if (isset($_GET['id'])) {
+     $id = $_GET['id'];
+   } else {
+     $id = "";
+   }
+
 if (isset($_POST['submit'])) {
   $pr_findings_id = $_POST['pr_findings_id'];
   $f_chief_complaint = $_POST['f_chief_complaint'];
@@ -20,7 +26,7 @@ if (isset($_POST['submit'])) {
   $f_pr = $_POST['f_pr'];
   $f_med = $_POST['f_med'];
 
-  $sql = "INSERT INTO findings (pr_findings_id, f_chief_complaint, f_physical_exam, f_diagnosis, f_bp, f_rr, f_cr, f_temp, f_wt, f_pr, f_med ) VALUES ('$pr_findings_id', '$f_chief_complaint',
+  $sql = "INSERT INTO findings (pr_findings_id, f_chief_complaint, f_physical_exam, f_diagnosis, f_bp, f_rr, f_cr, f_temp, f_wt, f_pr, f_med ) VALUES ('$id', '$f_chief_complaint',
     '$f_physical_exam', '$f_diagnosis', '$f_bp', '$f_rr', '$f_cr', '$f_temp', '$f_wt', '$f_pr', '$f_med')";
 
   if ($conn->query($sql) === TRUE) {
@@ -46,7 +52,9 @@ if (isset($_POST['submit'])) {
 
   <div class="parent">
     <div class="child header">
-      <p>Add Patient Findings</p>
+      <span class="header-content">
+              <a href="./logout.php">LOGOUT</a>
+          </span>
     </div>
     <div class="main">
       <div class="child">
@@ -68,21 +76,9 @@ if (isset($_POST['submit'])) {
                 </a>
               </li>
               <li class="link-item">
-                <a href="./addpatientrecord.php" class="link">
-                  <ion-icon name="file-tray-full-outline"></ion-icon>
-                  <span>Add Patient</span>
-                </a>
-              </li>
-              <li class="link-item active">
-                <a href="./addfindings.php" class="link">
-                  <ion-icon name="medkit-outline"></ion-icon>
-                  <span>Add Findings</span>
-                </a>
-              </li>
-              <li class="link-item">
-                <a href="add_user.php" class="link">
+                <a href="./userrecords.php" class="link">
                   <ion-icon name="person-add-outline"></ion-icon>
-                  <span>Add User</span>
+                  <span>User Management</span>
                 </a>
               </li>
               <li class="link-item user">
@@ -99,55 +95,67 @@ if (isset($_POST['submit'])) {
         </div>
       </div>
       <div class="child content">
-        <form action="" method="POST">
-          <div>
-            <label for="pr_findings_id">Case No.</label>
-            <input type="text" name="pr_findings_id">
-          </div>
-          <div>
-            <label for="f_chief_complaint">Chief Complaint</label>
-            <input type="text" name="f_chief_complaint">
-          </div>
-          <div>
-            <label for="f_physical_exam">Physical Examination</label>
-            <input type="text" name="f_physical_exam">
-          </div>
-          <div>
-            <label for="f_diagnosis">Diagnosis</label>
-            <input type="text" name="f_diagnosis">
-          </div>
-          <div>
-            <label for="f_med">Medication/Treatment</label>
-            <input type="text" name="f_med">
-          </div>
-          <div>
-            <label for="f_bp">Blood Pressure</label>
-            <input type="text" name="f_bp">
-          </div>
-          <div>
-            <label for="f_rr">Respiratory Rate</label>
-            <input type="text" name="f_rr">
-          </div>
-          <div>
-            <label for="f_cr">Capillary Refill</label>
-            <input type="text" name="f_cr">
-          </div>
-          <div>
-            <label for="f_temp">Temperature</label>
-            <input type="text" name="f_temp">
-          </div>
-          <div>
-            <label for="f_wt">Weight</label>
-            <input type="text" name="f_wt">
-          </div>
-          <div>
-            <label for="f_pr">Pulse Rate</label>
-            <input type="text" name="f_pr">
-          </div>
-          <input type="submit" name="submit" value="Add">
-        </form>
+        <div class="form-container">
+          <div class="title">Add Patient Findings</div>
+          <form action="" method="POST">
+            <div class="patient-details">
+              <div class="input-box" style="display: none;">
+                <span class="form-details">Case No.</span>
+                <input value="<?php echo $id ?>" type="text" name="pr_findings_id">
+              </div>
+              <div class="input-box">
+                <span class="form-details">Chief Complaint</span>
+                <textarea rows="3" cols="44" name="f_chief_complaint" style="resize: none; padding: 5px; outline: none;" placeholder="Enter Chief Complaint"></textarea>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Physical Examination</span>
+                <textarea rows="3" cols="44" name="f_physical_exam" style="resize: none; padding: 5px; outline: none;" placeholder="Enter Physical Examination"></textarea>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Diagnosis</span>
+                <textarea rows="3" cols="44" name="f_diagnosis" style="resize: none; padding: 5px; outline: none;" placeholder="Enter Diagnosis"></textarea>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Medication/Treatment</span>
+                <textarea rows="3" cols="44" name="f_med" style="resize: none; padding: 5px; outline: none;" placeholder="Enter Medication/Treatment"></textarea>
+              </div>
+            </div>
+            <div class="gender-details">
+              <span class="gender-title">VITAL SIGNS</span>
+              <div class="patient-details">
+            <div class="input-box">
+                <span class="form-details">Blood Pressure</span>
+                <input type="text" name="f_bp" placeholder="BP" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Respiratory Rate</span>
+                <input type="text" name="f_rr" placeholder="BP" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Capillary Refill</span>
+                <input type="text" name="f_cr" placeholder="BP" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Temperature</span>
+                <input type="text" name="f_temp" placeholder="BP" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Weight</span>
+                <input type="text" name="f_wt" placeholder="BP" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Pulse Rate</span>
+                <input type="text" name="f_pr" placeholder="BP" required>
+              </div>
+              <div class="input-box">
+              <input type="submit" value="Add Patient Findings" name="submit">
+            </div>
+            </div>
+            </div>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
 
   </div>
 

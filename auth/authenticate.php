@@ -33,8 +33,6 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             if ($row['username'] === $username && $row['password'] === $password) {
                 if ($row['role'] == "admin") {
                     header('Location: ../admin/home.php');
-                } else if ($row['role'] == "doctor") {
-                    header('Location: ../doctor/home.php');
                 } else if ($row['role'] == "nurse") {
                     header('Location: ../nurse/home.php');
                 } else {

@@ -20,6 +20,11 @@ include "../auth/conn.php";
 
 <body>
     <div class="parent">
+        <div class="child header">
+      <span class="header-content">
+              <a href="./logout.php">LOGOUT</a>
+          </span>
+    </div>
         <div class="main">
             <div class="child">
                 <div class="container">
@@ -38,18 +43,6 @@ include "../auth/conn.php";
                                 <a href="./patientrecords.php" class="link">
                                     <ion-icon name="person-outline"></ion-icon>
                                     <span>Patient Records</span>
-                                </a>
-                            </li>
-                            <li class="link-item">
-                                <a href="./addpatientrecord.php" class="link">
-                                    <ion-icon name="file-tray-full-outline"></ion-icon>
-                                    <span>Add Patient</span>
-                                </a>
-                            </li>
-                            <li class="link-item">
-                                <a href="./addfindings.php" class="link">
-                                    <ion-icon name="medkit-outline"></ion-icon>
-                                    <span>Add Findings</span>
                                 </a>
                             </li>
                             <li class="link-item user">
@@ -83,9 +76,11 @@ include "../auth/conn.php";
                             ?>
                                 <div class="details">
                                     <p>PATIENT NAME:</p>
-                                    <h3><?php echo $row['pr_lname']; ?></h3>
+                                    <div class="patient_name">
+                                    <h3><?php echo $row['pr_lname'], ', ' ?></h3>
                                     <h3><?php echo $row['pr_fname']; ?></h3>
                                     <h3><?php echo $row['pr_mname']; ?></h3>
+                                    </div>
                                 </div>
                                 <div class="caseno">
                                     <p class="no">Case No.</p>
@@ -96,7 +91,70 @@ include "../auth/conn.php";
                             ?>
                     </header>
                 </div>
+
+                <div class="details-container">
+                <div class="patient-details-div printable">
+                    <h3>Details</h3>
+
+                    <div class="title-container print-hidden">
+                    <label>Fullname</label>
+                    <div class="details-div">
+                        <span><?php echo $row['pr_lname'], ', ', $row['pr_fname'], ' ', $row['pr_mname'] ?></span>
+                    </div>
+                    </div>
+
+                    <div class="title-container">    
+                    <label>Address</label>
+                        <div class="details-div">
+                            <span><?php echo $row['pr_province'], ', ', $row['pr_city'], ', ', $row['pr_barangay'], ', ', $row['pr_addrs']  ?></span>
+                        </div>
+                    </div>
+                    
+                    <div class="title-container">
+                    <label>Age</label>
+                    <div class="details-div">
+                        <span><?php echo $row['pr_age'] ?></span>
+                    </div>
+                    </div>
+
+                    <div class="title-container">
+                    <label>Birthday</label>
+                    <div class="details-div">
+                        <span><?php echo $row['pr_bdate'] ?></span>
+                    </div>
+                    </div>
+
+                    <div class="title-container">
+                    <label>Gender</label>
+                    <div class="details-div">
+                        <span><?php echo $row['pr_gender'] ?></span>
+                    </div>
+                    </div>
+
+                    <div class="title-container">
+                    <label>Contact No.</label>
+                    <div class="details-div">
+                        <span><?php echo $row['pr_contact_no'] ?></span>
+                    </div>
+                    </div>
+
+                    <div class="title-container">
+                    <label>Guardian's Contact No.</label>
+                    <div class="details-div">
+                        <span><?php echo $row['pr_guardians_no'] ?></span>
+                    </div>
+                    </div>
+
+                    <div class="title-container">
+                    <label>Grade & Section</label>
+                    <div class="details-div">
+                        <span><?php echo $row['pr_grade'], ' - ', $row['pr_section'], ' ', ($row['pr_strand'] !== '') ?   '(' . $row['pr_strand'] . ')' : ''  ?></span>
+                    </div>
+                    </div>
+
+                    </div>
                 <div class="history">
+                    <h3>OPD Findings</h3>
                     <table>
                         <thead>
                             <tr>
@@ -132,6 +190,7 @@ include "../auth/conn.php";
                     </table>
                 </div>
             </div>
+        </div>
         </div>
     </div>
     </div>

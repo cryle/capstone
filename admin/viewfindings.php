@@ -44,21 +44,9 @@ include "../auth/conn.php";
                                 </a>
                             </li>
                             <li class="link-item">
-                                <a href="./addpatientrecord.php" class="link">
-                                    <ion-icon name="file-tray-full-outline"></ion-icon>
-                                    <span>Add Patient</span>
-                                </a>
-                            </li>
-                            <li class="link-item">
-                                <a href="./addfindings.php" class="link">
-                                    <ion-icon name="medkit-outline"></ion-icon>
-                                    <span>Add Findings</span>
-                                </a>
-                            </li>
-                            <li class="link-item">
-                                <a href="add_user.php" class="link">
+                                <a href="./userrecords.php" class="link">
                                     <ion-icon name="person-add-outline"></ion-icon>
-                                    <span>Add User</span>
+                                    <span>User Management</span>
                                 </a>
                             </li>
                             <li class="link-item user">

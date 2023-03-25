@@ -6,20 +6,31 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'nurse') {
   exit();
 }
 
-include "../auth/conn.php";
+include '../auth/conn.php';
 
 if (isset($_POST['submit'])) {
   $pr_fname = $_POST['pr_fname'];
   $pr_lname = $_POST['pr_lname'];
   $pr_mname = $_POST['pr_mname'];
-  $pr_grade_section = $_POST['pr_grade_section'];
+  $pr_contact_no = $_POST['pr_contact_no'];
+  $pr_guardians_no = $_POST['pr_guardians_no'];
+  $pr_grade = $_POST['pr_grade'];
+  $pr_section = $_POST['pr_section'];
+  $pr_strand = $_POST['pr_strand'];
   $pr_gender = $_POST['pr_gender'];
-  $pr_age = $_POST['pr_age'];
+  $pr_province = $_POST['pr_province'];
+  $pr_city = $_POST['pr_city'];
+  $pr_barangay = $_POST['pr_barangay'];
   $pr_addrs = $_POST['pr_addrs'];
   $pr_bdate = $_POST['pr_bdate'];
+  $birthdate = $_POST['pr_bdate'];
+  $birthdate_timestamp = strtotime($birthdate);
+  $current_timestamp = time();
+  $difference_seconds = $current_timestamp - $birthdate_timestamp;
+  $age = floor(date('Y', $difference_seconds) - 1970);
 
-  $sql = "INSERT INTO patient_record (pr_fname, pr_lname, pr_mname, pr_gender, pr_grade_section, pr_age, pr_addrs, pr_bdate)
-			VALUES ('$pr_fname', '$pr_lname', '$pr_mname', '$pr_gender', '$pr_grade_section', '$pr_age', '$pr_addrs', '$pr_bdate')";
+  $sql = "INSERT INTO patient_record (pr_lname, pr_fname, pr_mname, pr_contact_no, pr_guardians_no, pr_grade, pr_section, pr_strand, pr_gender, pr_age, pr_province, pr_city, pr_barangay, pr_addrs, pr_bdate)
+      VALUES ('$pr_lname', '$pr_fname', '$pr_mname', '$pr_contact_no', '$pr_guardians_no', '$pr_grade', '$pr_section', '$pr_strand', '$pr_gender', '$age', '$pr_province', '$pr_city', '$pr_barangay', '$pr_addrs', '$pr_bdate')";
 
   if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";
@@ -39,19 +50,20 @@ if (isset($_POST['submit'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../includes/style.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <title>Nurse | Add Patient Record</title>
+  <?php include 'script.js' ?>
+  <title>Admin | Add Patient Record</title>
 </head>
 
 <body class="dark-mode">
   <div class="parent">
     <div class="child header">
-      <p>Add Patient Record</p>
-    </div>
+      <span class="header-content">
+            <a href="./logout.php">LOGOUT</a>
+        </span>    </div>
     <div class="main">
       <div class="child">
         <div class="container">
           <div class="logo">
-            <!-- LOGO -->
           </div>
           <nav>
             <ul class="link-items">
@@ -65,18 +77,6 @@ if (isset($_POST['submit'])) {
                 <a href="./patientrecords.php" class="link">
                   <ion-icon name="person-outline"></ion-icon>
                   <span>Patient Records</span>
-                </a>
-              </li>
-              <li class="link-item active">
-                <a href="./addpatientrecord.php" class="link">
-                  <ion-icon name="medkit-outline"></ion-icon>
-                  <span>Add Patient</span>
-                </a>
-              </li>
-              <li class="link-item">
-                <a href="./addfindings.php" class="link">
-                  <ion-icon name="file-tray-full-outline"></ion-icon>
-                  <span>Add Findings</span>
                 </a>
               </li>
               <li class="link-item user">
@@ -93,45 +93,122 @@ if (isset($_POST['submit'])) {
         </div>
       </div>
       <div class="child content">
-        <div class="addpatientform">
-          <form action="" method="POST" style="color: white;">
-            <div>
-              <label for="pr_fname">Firstname</label>
-              <input type="text" name="pr_fname">
+        <div class="form-container">
+          <div class="title">Add Patient Record</div>
+          <form action="" method="POST">
+            <span class="patient-title">Patient Details</span>
+            <div class="patient-details">
+              <div class="input-box">
+                <span class="form-details">Firstname</span>
+                <input type="text" name="pr_fname" placeholder="Enter firstname" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Lastname</span>
+                <input type="text" name="pr_lname" placeholder="Enter lastname" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Middlename</span>
+                <input type="text" name="pr_mname" placeholder="Enter middlename" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Contact No.</span>
+                <input type="text" name="pr_contact_no" placeholder="Enter contact number" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Guardian's Contact No.</span>
+                <input type="text" name="pr_guardians_no" placeholder="Enter guardian's contact number" required>
+              </div>
+              <div class="input-box">
+                <span class="form-details">Birthdate</span>
+                <input type="date" name="pr_bdate" required>
+              </div>
             </div>
-            <div>
-              <label for="pr_lname">Lastname</label>
-              <input type="text" name="pr_lname">
+            <div class="gender-details">
+              <span class="gender-title">Grade & Section</span>
+              <div class="category">
+                <label>
+                  <select name="pr_grade" class="add-select">
+                    <option>Grade</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
+                </label>
+                <label>
+                  <select name="pr_section" class="add-select">
+                    <option>Section</option>
+                    <option value="Napier">Napier</option>
+                    <option value="Wind">Wind</option>
+                  </select>
+                </label>
+                <label>
+                  <select name="pr_strand" class="add-select">
+                    <option value="">Strand</option>
+                    <option value="ICT">ICT</option>
+                    <option value="STEM">STEM</option>
+                  </select>
+                </label>
+              </div>
             </div>
-            <div>
-              <label for="pr_mname">Middle Initial</label>
-              <input type="text" name="pr_mname">
+            <div class="gender-details">
+              <input type="radio" name="pr_gender" value="Male" id="dot-1">
+              <input type="radio" name="pr_gender" value="Female" id="dot-2">
+              <span class="gender-title">Gender</span>
+              <div class="category">
+                <label for="dot-1">
+                  <span class="dot one"></span>
+                  <span class="gender">Male</span>
+                </label>
+                <label for="dot-2">
+                  <span class="dot two"></span>
+                  <span class="gender">Female</span>
+                </label>
+              </div>
             </div>
-            <div>
-              <label for="pr_grade_section">Grade & Section</label>
-              <input type="text" name="pr_grade_section">
+            <div class="gender-details">
+              <span class="gender-title">Address</span>
+              <div class="category">
+                <label>
+                  <select class="add-select" name="pr_province" id="provinceSelect" onchange="populateCities()">
+    <option value="">Province</option>
+    <script>
+      for (var i = 0; i < provinceOptions.length; i++) {
+        var option = document.createElement("option");
+        option.value = provinceOptions[i];
+        option.text = provinceOptions[i];
+        document.getElementById("provinceSelect").add(option);
+      }
+    </script>
+  </select>
+<select class="add-select" name="pr_city" id="citySelect" onchange="populateBarangays()">
+  <option value="">City</option>
+</select>
+
+<select class="add-select" name="pr_barangay" id="barangaySelect">
+  <option value="">Barangay</option>
+</select>
+                </label>
+              </div>
             </div>
-            <div>
-              <label for="pr_gender">Gender</label>
-              <select name="pr_gender">
-                <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+            <div class="patient-details">
+            <div class="input-box">
+                <span class="form-details">Street Name, Building, House No.</span>
+                <input type="text" name="pr_addrs" placeholder="Street Name, Building, House No." required>
+              </div>
+
+            <div class="input-box">
+              <input type="submit" value="Add Patient" name="submit">
             </div>
-            <div>
-              <label for="pr_age">Age</label>
-              <input type="text" name="pr_age">
             </div>
-            <div>
-              <label for="pr_addrs">Address</label>
-              <input type="text" name="pr_addrs">
-            </div>
-            <div>
-              <label for="pr_bdate">Birthdate</label>
-              <input type="date" name="pr_bdate">
-            </div>
-            <input type="submit" name="submit" value="Submit">
           </form>
         </div>
       </div>

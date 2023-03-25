@@ -43,18 +43,6 @@ include "../auth/conn.php";
                                     <span>Patient Records</span>
                                 </a>
                             </li>
-                            <li class="link-item">
-                                <a href="./addpatientrecord.php" class="link">
-                                    <ion-icon name="file-tray-full-outline"></ion-icon>
-                                    <span>Add Patient</span>
-                                </a>
-                            </li>
-                            <li class="link-item">
-                                <a href="./addfindings.php" class="link">
-                                    <ion-icon name="medkit-outline"></ion-icon>
-                                    <span>Add Findings</span>
-                                </a>
-                            </li>
                             <li class="link-item user">
                                 <a href="./logout.php" class="link">
                                     <img src="../public/winter.jpg" alt="user-icon">

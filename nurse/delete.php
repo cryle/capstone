@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'nurse') {
     header('Location: ../index.php');
     exit();
 }
@@ -14,15 +14,5 @@ if (isset($_GET['id'])) {
     if (mysqli_query($conn, $sql)) {
         echo "Deleted Record";
         header("Location: ./patientrecords.php");
-    }
-}
-
-if (isset($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
-
-    $sql = "DELETE FROM users WHERE user_id = $user_id";
-    if (mysqli_query($conn, $sql)) {
-        echo "user deleted";
-        header("Location: ./userrecords.php");
     }
 }
