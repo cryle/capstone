@@ -10,7 +10,7 @@ include "../auth/conn.php";
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
-    $sql = "DELETE FROM patient_record WHERE pr_id = $id";
+    $sql = "DELETE FROM patient_record WHERE id_no = $id";
     if (mysqli_query($conn, $sql)) {
         echo "Deleted Record";
         header("Location: ./patientrecords.php");

@@ -66,6 +66,12 @@ if (isset($_POST['submit'])) {
                 </a>
               </li>
               <li class="link-item">
+                <a href="./reports.php" class="link">
+                  <ion-icon name="person-add-outline"></ion-icon>
+                  <span>Reports</span>
+                </a>
+              </li>
+              <li class="link-item">
                 <a href="./userrecords.php" class="link">
                   <ion-icon name="person-add-outline"></ion-icon>
                   <span>User Management</span>

@@ -23,8 +23,8 @@ include "../auth/conn.php";
   <div class="parent">
     <div class="child header">
       <span class="header-content">
-            <a href="./logout.php">LOGOUT</a>
-        </span>
+        <a href="./logout.php">LOGOUT</a>
+      </span>
     </div>
     <div class="main">
       <a class="createuser" href="./addpatientrecord.php">Add Patient</a>
@@ -45,6 +45,12 @@ include "../auth/conn.php";
                 <a href="./patientrecords.php" class="link">
                   <ion-icon name="person-outline"></ion-icon>
                   <span style="--i: 3">Patient Records</span>
+                </a>
+              </li>
+              <li class="link-item">
+                <a href="./reports.php" class="link">
+                  <ion-icon name="person-add-outline"></ion-icon>
+                  <span>Reports</span>
                 </a>
               </li>
               <li class="link-item">
@@ -86,7 +92,7 @@ include "../auth/conn.php";
             <table>
               <thead>
                 <tr>
-                  <th><a href="?sort=pr_id">Case No.</a></th>
+                  <th><a href="?sort=id_no">ID No.</a></th>
                   <th><a href="?sort=pr_lname">Last Name</a></th>
                   <th><a href="?sort=pr_fname">First Name</a></th>
                   <th>Grade & Section</th>
@@ -107,8 +113,8 @@ include "../auth/conn.php";
 
                 if (isset($_GET['sort'])) {
                   $sort = $_GET['sort'];
-                  if ($sort == 'pr_id') {
-                    $sql = "SELECT * FROM patient_record WHERE pr_id LIKE '%$query%' ORDER BY pr_id ASC";
+                  if ($sort == 'id_no') {
+                    $sql = "SELECT * FROM patient_record WHERE id_no LIKE '%$query%' ORDER BY id_no ASC";
                   } else if ($sort == 'pr_lname') {
                     $sql = "SELECT * FROM patient_record WHERE pr_lname LIKE '%$query%' ORDER BY pr_lname ASC";
                   } else if ($sort == 'pr_fname') {
@@ -121,13 +127,14 @@ include "../auth/conn.php";
                     $sql = "SELECT * FROM patient_record WHERE pr_date LIKE '%$query%' ORDER BY pr_date ASC";
                   }
                 } else {
-                  $sql = "SELECT * FROM patient_record WHERE pr_id LIKE '%$query%' OR pr_fname LIKE '%$query%' OR pr_grade LIKE '%$query%' OR pr_section LIKE '%$query%' OR pr_strand LIKE '%$query%' OR pr_lname LIKE '%$query%' OR pr_mname LIKE '%$query%' OR pr_gender LIKE '%$query%' OR pr_age LIKE '%$query%' ";
+                  $sql = "SELECT * FROM patient_record WHERE id_no LIKE '%$query%' OR pr_fname LIKE '%$query%' OR pr_grade LIKE '%$query%' OR pr_section LIKE '%$query%' OR pr_strand LIKE '%$query%' OR pr_lname LIKE '%$query%' OR pr_mname LIKE '%$query%' OR pr_gender LIKE '%$query%' OR pr_age LIKE '%$query%' ";
                 }
 
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
                   while ($row = $result->fetch_assoc()) {
+                    $id_no = $row['id_no'];
                     $pr_id = $row['pr_id'];
                     $pr_fname = $row['pr_fname'];
                     $pr_lname = $row['pr_lname'];
@@ -152,10 +159,10 @@ include "../auth/conn.php";
 
 
                     echo '<tr>
-                        <td><a style="color: #fff; font-weight: bold; text-decoration: none;" href="addfindings.php?id='.$pr_id.'">' . $pr_id . '</a></td>
+                        <td><a style="color: #fff; font-weight: bold; text-decoration: none;" href="addfindings.php?id=' . $id_no . '">' . $id_no . '</a></td>
                         <td>' . $pr_lname . '</td>
                         <td>' . $pr_fname . '</td>
-                        <td>'.$pr_grade, '-', $pr_section.'</td>
+                        <td>' . $pr_grade, '-', $pr_section . '</td>
                         <td>' . $pr_gender . '</td>
                         <td>' . $age . '</td>
                         <td class="date">' . $pr_date . '</td>
@@ -166,16 +173,16 @@ include "../auth/conn.php";
                         <div class="caret"></div>
                       </div>
                       <ul class="menu">
-                        <a href="viewpatient.php?id=' . $pr_id . '"><li>View</li></a>
-                        <a href="edit.php?id=' . $pr_id . '"><li>Edit</li></a>
-                        <a href="delete.php?id=' . $pr_id . '"><li>Delete</li></a>
+                        <a href="viewpatient.php?id=' . $id_no . '"><li>View</li></a>
+                        <a href="edit.php?id=' . $id_no . '"><li>Edit</li></a>
+                        <a href="delete.php?id=' . $id_no . '"><li>Delete</li></a>
                       </ul>
                     </div>
                   </td>
                 </tr>';
                   }
                 } else {
-                  echo "0 results";
+                  echo "No data found";
                 }
                 ?>
               </tbody>

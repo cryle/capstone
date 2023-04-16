@@ -21,9 +21,9 @@ include "../auth/conn.php";
 <body>
     <div class="parent">
         <div class="child header">
-          <span class="header-content">
-              <a href="./logout.php">LOGOUT</a>
-          </span>
+            <span class="header-content">
+                <a href="./logout.php">LOGOUT</a>
+            </span>
         </div>
         <div class="main">
             <div class="child">
@@ -43,6 +43,12 @@ include "../auth/conn.php";
                                 <a href="./patientrecords.php" class="link">
                                     <ion-icon name="person-outline"></ion-icon>
                                     <span>Patient Records</span>
+                                </a>
+                            </li>
+                            <li class="link-item">
+                                <a href="./reports.php" class="link">
+                                    <ion-icon name="person-add-outline"></ion-icon>
+                                    <span>Reports</span>
                                 </a>
                             </li>
                             <li class="link-item user">
@@ -66,8 +72,8 @@ include "../auth/conn.php";
                 <div class="home">
                     <div class="home-div">
                         <div class="home-header">
-                    <h1>Welcome to Mary Josette Academy's Patient Medical Record System</h1>
-                    </div>
+                            <h1>Welcome to Mary Josette Academy's Patient Medical Record System</h1>
+                        </div>
                     </div>
                     <img src="./img/home.jpg">
                 </div>

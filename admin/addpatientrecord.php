@@ -9,34 +9,43 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
 include '../auth/conn.php';
 
 if (isset($_POST['submit'])) {
-  $pr_fname = $_POST['pr_fname'];
-  $pr_lname = $_POST['pr_lname'];
-  $pr_mname = $_POST['pr_mname'];
-  $pr_contact_no = $_POST['pr_contact_no'];
-  $pr_guardians_no = $_POST['pr_guardians_no'];
-  $pr_grade = $_POST['pr_grade'];
-  $pr_section = $_POST['pr_section'];
-  $pr_strand = $_POST['pr_strand'];
-  $pr_gender = $_POST['pr_gender'];
-  $pr_province = $_POST['pr_province'];
-  $pr_city = $_POST['pr_city'];
-  $pr_barangay = $_POST['pr_barangay'];
-  $pr_addrs = $_POST['pr_addrs'];
-  $pr_bdate = $_POST['pr_bdate'];
-  $birthdate = $_POST['pr_bdate'];
-  $birthdate_timestamp = strtotime($birthdate);
-  $current_timestamp = time();
-  $difference_seconds = $current_timestamp - $birthdate_timestamp;
-  $age = floor(date('Y', $difference_seconds) - 1970);
+  $id_no = $_POST['id_no'];
 
-  $sql = "INSERT INTO patient_record (pr_lname, pr_fname, pr_mname, pr_contact_no, pr_guardians_no, pr_grade, pr_section, pr_strand, pr_gender, pr_age, pr_province, pr_city, pr_barangay, pr_addrs, pr_bdate)
-      VALUES ('$pr_lname', '$pr_fname', '$pr_mname', '$pr_contact_no', '$pr_guardians_no', '$pr_grade', '$pr_section', '$pr_strand', '$pr_gender', '$age', '$pr_province', '$pr_city', '$pr_barangay', '$pr_addrs', '$pr_bdate')";
+  $sql = "SELECT * FROM patient_record WHERE id_no = '$id_no'";
+  $result = mysqli_query($conn, $sql);
 
-  if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-    header("Location: ./patientrecords.php");
+  if (mysqli_num_rows($result) > 0) {
+    $_SESSION['username_exist'] = true;
   } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    $id_no = $_POST['id_no'];
+    $pr_fname = $_POST['pr_fname'];
+    $pr_lname = $_POST['pr_lname'];
+    $pr_contact_no = $_POST['pr_contact_no'];
+    $pr_guardians_no = $_POST['pr_guardians_no'];
+    $pr_grade = $_POST['pr_grade'];
+    $pr_section = $_POST['pr_section'];
+    $pr_strand = $_POST['pr_strand'];
+    $pr_gender = $_POST['pr_gender'];
+    $pr_province = $_POST['pr_province'];
+    $pr_city = $_POST['pr_city'];
+    $pr_barangay = $_POST['pr_barangay'];
+    $pr_addrs = $_POST['pr_addrs'];
+    $pr_bdate = $_POST['pr_bdate'];
+    $birthdate = $_POST['pr_bdate'];
+    $birthdate_timestamp = strtotime($birthdate);
+    $current_timestamp = time();
+    $difference_seconds = $current_timestamp - $birthdate_timestamp;
+    $age = floor(date('Y', $difference_seconds) - 1970);
+
+    $sql = "INSERT INTO patient_record (id_no, pr_lname, pr_fname, pr_contact_no, pr_guardians_no, pr_grade, pr_section, pr_strand, pr_gender, pr_age, pr_province, pr_city, pr_barangay, pr_addrs, pr_bdate)
+      VALUES ('$id_no', '$pr_lname', '$pr_fname', '$pr_contact_no', '$pr_guardians_no', '$pr_grade', '$pr_section', '$pr_strand', '$pr_gender', '$age', '$pr_province', '$pr_city', '$pr_barangay', '$pr_addrs', '$pr_bdate')";
+
+    if ($conn->query($sql) === TRUE) {
+      echo "New record created successfully";
+      header("Location: ./patientrecords.php");
+    } else {
+      echo "Error: " . $sql . "<br>" . $conn->error;
+    }
   }
 }
 
@@ -58,8 +67,9 @@ if (isset($_POST['submit'])) {
   <div class="parent">
     <div class="child header">
       <span class="header-content">
-            <a href="./logout.php">LOGOUT</a>
-        </span>    </div>
+        <a href="./logout.php">LOGOUT</a>
+      </span>
+    </div>
     <div class="main">
       <div class="child">
         <div class="container">
@@ -77,6 +87,12 @@ if (isset($_POST['submit'])) {
                 <a href="./patientrecords.php" class="link">
                   <ion-icon name="person-outline"></ion-icon>
                   <span>Patient Records</span>
+                </a>
+              </li>
+              <li class="link-item">
+                <a href="./reports.php" class="link">
+                  <ion-icon name="person-add-outline"></ion-icon>
+                  <span>Reports</span>
                 </a>
               </li>
               <li class="link-item">
@@ -103,7 +119,21 @@ if (isset($_POST['submit'])) {
           <div class="title">Add Patient Record</div>
           <form action="" method="POST">
             <span class="patient-title">Patient Details</span>
+            <div class="id_error">
+              <?php
+
+              if (isset($_SESSION['username_exist'])) {
+                echo "School ID No Already Exists";
+                unset($_SESSION['username_exist']);
+              }
+
+              ?>
+            </div>
             <div class="patient-details">
+              <div class="input-box">
+                <span class="form-details">School ID No.</span>
+                <input type="text" name="id_no" placeholder="Enter School ID No." required>
+              </div>
               <div class="input-box">
                 <span class="form-details">Firstname</span>
                 <input type="text" name="pr_fname" placeholder="Enter firstname" required>
@@ -111,10 +141,6 @@ if (isset($_POST['submit'])) {
               <div class="input-box">
                 <span class="form-details">Lastname</span>
                 <input type="text" name="pr_lname" placeholder="Enter lastname" required>
-              </div>
-              <div class="input-box">
-                <span class="form-details">Middlename</span>
-                <input type="text" name="pr_mname" placeholder="Enter middlename" required>
               </div>
               <div class="input-box">
                 <span class="form-details">Contact No.</span>
@@ -185,35 +211,35 @@ if (isset($_POST['submit'])) {
               <div class="category">
                 <label>
                   <select class="add-select" name="pr_province" id="provinceSelect" onchange="populateCities()">
-    <option value="">Province</option>
-    <script>
-      for (var i = 0; i < provinceOptions.length; i++) {
-        var option = document.createElement("option");
-        option.value = provinceOptions[i];
-        option.text = provinceOptions[i];
-        document.getElementById("provinceSelect").add(option);
-      }
-    </script>
-  </select>
-<select class="add-select" name="pr_city" id="citySelect" onchange="populateBarangays()">
-  <option value="">City</option>
-</select>
+                    <option value="">Province</option>
+                    <script>
+                      for (var i = 0; i < provinceOptions.length; i++) {
+                        var option = document.createElement("option");
+                        option.value = provinceOptions[i];
+                        option.text = provinceOptions[i];
+                        document.getElementById("provinceSelect").add(option);
+                      }
+                    </script>
+                  </select>
+                  <select class="add-select" name="pr_city" id="citySelect" onchange="populateBarangays()">
+                    <option value="">City</option>
+                  </select>
 
-<select class="add-select" name="pr_barangay" id="barangaySelect">
-  <option value="">Barangay</option>
-</select>
+                  <select class="add-select" name="pr_barangay" id="barangaySelect">
+                    <option value="">Barangay</option>
+                  </select>
                 </label>
               </div>
             </div>
             <div class="patient-details">
-            <div class="input-box">
+              <div class="input-box">
                 <span class="form-details">Street Name, Building, House No.</span>
                 <input type="text" name="pr_addrs" placeholder="Street Name, Building, House No." required>
               </div>
 
-            <div class="input-box">
-              <input type="submit" value="Add Patient" name="submit">
-            </div>
+              <div class="input-box addpatient">
+                <input type="submit" value="Add Patient" name="submit">
+              </div>
             </div>
           </form>
         </div>
